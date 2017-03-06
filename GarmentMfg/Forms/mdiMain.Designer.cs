@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.masterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.jobberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.garmentProductionEntryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fabricIssueToJobberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.garmentManufacturingCycleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.autoPurchaseEntryModuleForJobberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pendingProgramToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unmatchProductionQuantityReportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.masterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.productToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.jobberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.productGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.prToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoPurchaseEntryModuleForJobberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,6 +61,42 @@
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // masterToolStripMenuItem
+            // 
+            this.masterToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.masterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.productToolStripMenuItem,
+            this.productGroupToolStripMenuItem,
+            this.toolStripMenuItem2,
+            this.jobberToolStripMenuItem});
+            this.masterToolStripMenuItem.Name = "masterToolStripMenuItem";
+            this.masterToolStripMenuItem.Size = new System.Drawing.Size(67, 23);
+            this.masterToolStripMenuItem.Text = "Master";
+            // 
+            // productToolStripMenuItem
+            // 
+            this.productToolStripMenuItem.Name = "productToolStripMenuItem";
+            this.productToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
+            this.productToolStripMenuItem.Text = "Product";
+            this.productToolStripMenuItem.Click += new System.EventHandler(this.productToolStripMenuItem_Click);
+            // 
+            // productGroupToolStripMenuItem
+            // 
+            this.productGroupToolStripMenuItem.Name = "productGroupToolStripMenuItem";
+            this.productGroupToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
+            this.productGroupToolStripMenuItem.Text = "Product Group";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(167, 6);
+            // 
+            // jobberToolStripMenuItem
+            // 
+            this.jobberToolStripMenuItem.Name = "jobberToolStripMenuItem";
+            this.jobberToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
+            this.jobberToolStripMenuItem.Text = "Jobber";
+            // 
             // garmentProductionEntryToolStripMenuItem
             // 
             this.garmentProductionEntryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -75,14 +111,27 @@
             // fabricIssueToJobberToolStripMenuItem
             // 
             this.fabricIssueToJobberToolStripMenuItem.Name = "fabricIssueToJobberToolStripMenuItem";
-            this.fabricIssueToJobberToolStripMenuItem.Size = new System.Drawing.Size(272, 24);
+            this.fabricIssueToJobberToolStripMenuItem.Size = new System.Drawing.Size(331, 24);
             this.fabricIssueToJobberToolStripMenuItem.Text = "Fabric Issue To Jobber";
+            this.fabricIssueToJobberToolStripMenuItem.Click += new System.EventHandler(this.fabricIssueToJobberToolStripMenuItem_Click);
             // 
             // garmentManufacturingCycleToolStripMenuItem
             // 
             this.garmentManufacturingCycleToolStripMenuItem.Name = "garmentManufacturingCycleToolStripMenuItem";
-            this.garmentManufacturingCycleToolStripMenuItem.Size = new System.Drawing.Size(272, 24);
+            this.garmentManufacturingCycleToolStripMenuItem.Size = new System.Drawing.Size(331, 24);
             this.garmentManufacturingCycleToolStripMenuItem.Text = "Garment Manufacturing Cycle";
+            this.garmentManufacturingCycleToolStripMenuItem.Click += new System.EventHandler(this.garmentManufacturingCycleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(328, 6);
+            // 
+            // autoPurchaseEntryModuleForJobberToolStripMenuItem
+            // 
+            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Name = "autoPurchaseEntryModuleForJobberToolStripMenuItem";
+            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Size = new System.Drawing.Size(331, 24);
+            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Text = "Auto Purchase Entry Module For Jobber";
             // 
             // reportToolStripMenuItem
             // 
@@ -106,57 +155,11 @@
             this.unmatchProductionQuantityReportToolStripMenuItem.Size = new System.Drawing.Size(316, 24);
             this.unmatchProductionQuantityReportToolStripMenuItem.Text = "Unmatch Production Quantity Report";
             // 
-            // masterToolStripMenuItem
-            // 
-            this.masterToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
-            this.masterToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.productToolStripMenuItem,
-            this.productGroupToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.jobberToolStripMenuItem});
-            this.masterToolStripMenuItem.Name = "masterToolStripMenuItem";
-            this.masterToolStripMenuItem.Size = new System.Drawing.Size(67, 23);
-            this.masterToolStripMenuItem.Text = "Master";
-            // 
-            // productToolStripMenuItem
-            // 
-            this.productToolStripMenuItem.Name = "productToolStripMenuItem";
-            this.productToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
-            this.productToolStripMenuItem.Text = "Product";
-            // 
-            // jobberToolStripMenuItem
-            // 
-            this.jobberToolStripMenuItem.Name = "jobberToolStripMenuItem";
-            this.jobberToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
-            this.jobberToolStripMenuItem.Text = "Jobber";
-            // 
-            // productGroupToolStripMenuItem
-            // 
-            this.productGroupToolStripMenuItem.Name = "productGroupToolStripMenuItem";
-            this.productGroupToolStripMenuItem.Size = new System.Drawing.Size(170, 24);
-            this.productGroupToolStripMenuItem.Text = "Product Group";
-            // 
             // prToolStripMenuItem
             // 
             this.prToolStripMenuItem.Name = "prToolStripMenuItem";
             this.prToolStripMenuItem.Size = new System.Drawing.Size(316, 24);
             this.prToolStripMenuItem.Text = "Production Costing Report";
-            // 
-            // autoPurchaseEntryModuleForJobberToolStripMenuItem
-            // 
-            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Name = "autoPurchaseEntryModuleForJobberToolStripMenuItem";
-            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Size = new System.Drawing.Size(331, 24);
-            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Text = "Auto Purchase Entry Module For Jobber";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(328, 6);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(167, 6);
             // 
             // mdiMain
             // 

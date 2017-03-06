@@ -1,4 +1,4 @@
-﻿namespace GarmentMfg.Forms
+﻿namespace GarmentMfg
 {
     partial class frmProductIssue
     {

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace GarmentMfg.Forms
+namespace GarmentMfg
 {
     public partial class frmProductIssue : Form
     {
