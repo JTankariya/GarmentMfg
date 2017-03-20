@@ -18,7 +18,7 @@ namespace GarmentMfg
         //public static string path;
         public static string ExpertDirectorypath;
         public static string MultiViewId = "";
-        static string staticCompanyCode = "012";
+        static string staticCompanyCode = "013";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -68,14 +68,14 @@ namespace GarmentMfg
                 MessageBox.Show("MfgCycle.DBF is not found in " + Operation.expertpath + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-            if (!File.Exists(Operation.expertpath + "\\MfgCycle2.DBF"))
+            if (!File.Exists(Operation.expertpath + "\\MfgTrans.DBF"))
             {
-                MessageBox.Show("MfgCycle2.DBF is not found in " + Operation.expertpath + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("MfgTrans.DBF is not found in " + Operation.expertpath + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
-            if (!File.Exists(Operation.expertpath + "\\MfgCycle3.DBF"))
+            if (!File.Exists(Operation.expertpath + "\\MfgItems.DBF"))
             {
-                MessageBox.Show("MfgCycle3.DBF is not found in " + Operation.expertpath + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("MfgItems.DBF is not found in " + Operation.expertpath + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
             Application.Run(new mdiMain());

@@ -11,7 +11,7 @@ namespace GarmentMfg
 {
     public class Operation
     {
-        public static OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + Application.StartupPath + "\\InitialDBFs;Mode=ReadWrite;Extended Properties=dBASE IV;Persist Security Info=False");
+        public static OleDbConnection Conn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + Application.StartupPath + "\\InitialDBFs;Mode=ReadWrite;Extended Properties=dBASE IV;Persist Security Info=True");
         public static string MsgTitle = "Expert Mobile System By Shah Infotech-9979866022";
         public static string gViewQuery = "";
         public static string ViewID = "";
@@ -110,21 +110,37 @@ namespace GarmentMfg
             ComboBoxName.SelectedIndex = ComboBoxName.Items.Count - 1;
         }
 
-        public static void BindGridComboBox(DataGridView GridName, int _rowindex, int colIndex, DataGridViewComboBoxCell currcell, string Query, string DisplayMember, string ValueMember, string InitMsg)
+        public static void BindGridComboBox(DataGridView GridName, DataGridViewCell currcell, string Query, string DisplayMember, string ValueMember, string InitMsg)
         {
             DataGridViewComboBoxCell dgvcombo = default(DataGridViewComboBoxCell);
             DataTable dtGrpBrand = new DataTable();
-            dgvcombo = currcell;
+            dgvcombo = (DataGridViewComboBoxCell)currcell;
             dtGrpBrand = GetDataTable(Query);
             dtGrpBrand.Rows.Add();
             dtGrpBrand.Rows[dtGrpBrand.Rows.Count - 1][DisplayMember] = InitMsg;
             dtGrpBrand.Rows[dtGrpBrand.Rows.Count - 1][ValueMember] = "0";
             dgvcombo.AutoComplete = true;
-            ((DataGridViewComboBoxCell)GridName.Rows[_rowindex].Cells[colIndex]).DataSource = dtGrpBrand;
-            ((DataGridViewComboBoxCell)GridName.Rows[_rowindex].Cells[colIndex]).DisplayMember = DisplayMember;
-            ((DataGridViewComboBoxCell)GridName.Rows[_rowindex].Cells[colIndex]).ValueMember = ValueMember;
-            ((DataGridViewComboBoxCell)GridName.Rows[_rowindex].Cells[colIndex]).ValueType = typeof(string);
-            ((DataGridViewComboBoxCell)GridName.Rows[_rowindex].Cells[colIndex]).Value = "0";
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).DataSource = dtGrpBrand;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).DisplayMember = DisplayMember;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).ValueMember = ValueMember;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).ValueType = typeof(string);
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).Value = "0";
+            //Call addserialno()
+        }
+
+        public static void BindGridComboBox(DataGridView GridName, DataGridViewCell currcell, DataTable dtTable, string DisplayMember, string ValueMember, string InitMsg)
+        {
+            DataGridViewComboBoxCell dgvcombo = default(DataGridViewComboBoxCell);
+            dgvcombo = (DataGridViewComboBoxCell)currcell;
+            dtTable.Rows.Add();
+            dtTable.Rows[dtTable.Rows.Count - 1][DisplayMember] = InitMsg;
+            dtTable.Rows[dtTable.Rows.Count - 1][ValueMember] = "0";
+            dgvcombo.AutoComplete = true;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).DataSource = dtTable;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).DisplayMember = DisplayMember;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).ValueMember = ValueMember;
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).ValueType = typeof(string);
+            ((DataGridViewComboBoxCell)GridName.Rows[currcell.RowIndex].Cells[currcell.ColumnIndex]).Value = "0";
             //Call addserialno()
         }
     }

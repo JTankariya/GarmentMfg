@@ -33,5 +33,10 @@ namespace GarmentMfg
         {
 
         }
+
+        private void mdiMain_Load(object sender, EventArgs e)
+        {
+            garmentManufacturingCycleToolStripMenuItem_Click(null, null);
+        }
     }
 }
