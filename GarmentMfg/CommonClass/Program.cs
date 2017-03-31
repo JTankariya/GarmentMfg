@@ -18,7 +18,7 @@ namespace GarmentMfg
         //public static string path;
         public static string ExpertDirectorypath;
         public static string MultiViewId = "";
-        static string staticCompanyCode = "013";
+        static string staticCompanyCode = "014";
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

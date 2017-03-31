@@ -46,19 +46,10 @@
             this.tpCuttingProcess = new System.Windows.Forms.TabPage();
             this.tabCutter = new System.Windows.Forms.TabControl();
             this.tabCutterInfo = new System.Windows.Forms.TabPage();
+            this.label38 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
             this.txtCuttingRate = new System.Windows.Forms.TextBox();
             this.dgvCuttingProcess = new System.Windows.Forms.DataGridView();
-            this.CuttingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingJobberName = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.CuttingType = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingIssueDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingIssuedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingReceivedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingReceivedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CuttingNarration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label29 = new System.Windows.Forms.Label();
             this.cmbCuttingJobberName = new System.Windows.Forms.ComboBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -70,6 +61,7 @@
             this.txtCuttingReceivedQty = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.tabFabricUsed = new System.Windows.Forms.TabPage();
+            this.label37 = new System.Windows.Forms.Label();
             this.dgvFabricUsed = new System.Windows.Forms.DataGridView();
             this.SrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ProductName = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -82,6 +74,7 @@
             this.txtCuttingTotalAmount = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.tpWashingProcess = new System.Windows.Forms.TabPage();
+            this.label39 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.txtWashingRate = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
@@ -99,22 +92,11 @@
             this.dtpWashingStartDate = new System.Windows.Forms.DateTimePicker();
             this.label23 = new System.Windows.Forms.Label();
             this.dgvWashingProcess = new System.Windows.Forms.DataGridView();
-            this.WashingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WashingJobberName = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.WashingQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WashingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WashingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.WashingNarration = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpPressProcess = new System.Windows.Forms.TabPage();
+            this.label40 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.txtPressingRate = new System.Windows.Forms.TextBox();
             this.dgvPressingProcess = new System.Windows.Forms.DataGridView();
-            this.PressingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PressingJobber = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.PressingQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PressingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PressingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PressingNarr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label24 = new System.Windows.Forms.Label();
             this.cmbPressingJobberName = new System.Windows.Forms.ComboBox();
             this.txtPressingCostPerPcs = new System.Windows.Forms.TextBox();
@@ -130,6 +112,7 @@
             this.dtpPressStartDate = new System.Windows.Forms.DateTimePicker();
             this.label31 = new System.Windows.Forms.Label();
             this.tpUsedItems = new System.Windows.Forms.TabPage();
+            this.label41 = new System.Windows.Forms.Label();
             this.txtOthCostPrPcs = new System.Windows.Forms.TextBox();
             this.label35 = new System.Windows.Forms.Label();
             this.txtOthTotalAmount = new System.Windows.Forms.TextBox();
@@ -155,6 +138,31 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lblId = new System.Windows.Forms.Label();
             this.lblExpertLinks = new System.Windows.Forms.Label();
+            this.PressingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PressingJobber = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.PressingQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PressingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PressingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PressingNarr = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsPBilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WashingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WashingJobberName = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.WashingQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WashingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WashingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.WashingNarration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsWBilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingSrNo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingJobberName = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.CuttingType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingIssueDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingIssuedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingReceivedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingReceivedQty = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingRate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingAmount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CuttingNarration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsCBilled = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
             this.tabProcess.SuspendLayout();
             this.tpCuttingProcess.SuspendLayout();
@@ -193,6 +201,7 @@
             this.btnExit.TabIndex = 12;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // btnDelete
             // 
@@ -204,6 +213,7 @@
             this.btnDelete.TabIndex = 10;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSave
             // 
@@ -383,6 +393,7 @@
             // 
             // tabCutterInfo
             // 
+            this.tabCutterInfo.Controls.Add(this.label38);
             this.tabCutterInfo.Controls.Add(this.label32);
             this.tabCutterInfo.Controls.Add(this.txtCuttingRate);
             this.tabCutterInfo.Controls.Add(this.dgvCuttingProcess);
@@ -403,6 +414,18 @@
             this.tabCutterInfo.TabIndex = 0;
             this.tabCutterInfo.Text = "Cutter Info";
             this.tabCutterInfo.UseVisualStyleBackColor = true;
+            // 
+            // label38
+            // 
+            this.label38.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Calibri", 8F);
+            this.label38.ForeColor = System.Drawing.Color.Red;
+            this.label38.Location = new System.Drawing.Point(605, 67);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(321, 13);
+            this.label38.TabIndex = 24;
+            this.label38.Text = "* To delete any rows, click \'F8\' from keyboard after selecting any cell";
             // 
             // label32
             // 
@@ -442,83 +465,18 @@
             this.CuttingReceivedQty,
             this.CuttingRate,
             this.CuttingAmount,
-            this.CuttingNarration});
-            this.dgvCuttingProcess.Location = new System.Drawing.Point(7, 75);
+            this.CuttingNarration,
+            this.IsCBilled});
+            this.dgvCuttingProcess.Location = new System.Drawing.Point(7, 83);
             this.dgvCuttingProcess.Name = "dgvCuttingProcess";
             this.dgvCuttingProcess.RowHeadersVisible = false;
-            this.dgvCuttingProcess.Size = new System.Drawing.Size(919, 243);
+            this.dgvCuttingProcess.Size = new System.Drawing.Size(919, 205);
             this.dgvCuttingProcess.TabIndex = 6;
             this.dgvCuttingProcess.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCuttingProcess_CellValueChanged);
             this.dgvCuttingProcess.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvCuttingProcess_RowsAdded);
             this.dgvCuttingProcess.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvCuttingProcess_EditingControlShowing);
             this.dgvCuttingProcess.CurrentCellChanged += new System.EventHandler(this.dgvCuttingProcess_CurrentCellChanged);
             this.dgvCuttingProcess.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvCuttingProcess_KeyDown);
-            // 
-            // CuttingSrNo
-            // 
-            this.CuttingSrNo.HeaderText = "Sr No";
-            this.CuttingSrNo.Name = "CuttingSrNo";
-            this.CuttingSrNo.ReadOnly = true;
-            this.CuttingSrNo.Width = 68;
-            // 
-            // CuttingJobberName
-            // 
-            this.CuttingJobberName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.CuttingJobberName.HeaderText = "Jobber Name";
-            this.CuttingJobberName.Name = "CuttingJobberName";
-            this.CuttingJobberName.Width = 99;
-            // 
-            // CuttingType
-            // 
-            this.CuttingType.HeaderText = "Type";
-            this.CuttingType.Name = "CuttingType";
-            this.CuttingType.ReadOnly = true;
-            this.CuttingType.Width = 64;
-            // 
-            // CuttingIssueDate
-            // 
-            this.CuttingIssueDate.HeaderText = "Issue Date";
-            this.CuttingIssueDate.Name = "CuttingIssueDate";
-            this.CuttingIssueDate.ReadOnly = true;
-            this.CuttingIssueDate.Width = 103;
-            // 
-            // CuttingIssuedQty
-            // 
-            this.CuttingIssuedQty.HeaderText = "Issued Qty";
-            this.CuttingIssuedQty.Name = "CuttingIssuedQty";
-            this.CuttingIssuedQty.Width = 103;
-            // 
-            // CuttingReceivedDate
-            // 
-            this.CuttingReceivedDate.HeaderText = "Received Date";
-            this.CuttingReceivedDate.Name = "CuttingReceivedDate";
-            this.CuttingReceivedDate.ReadOnly = true;
-            this.CuttingReceivedDate.Width = 128;
-            // 
-            // CuttingReceivedQty
-            // 
-            this.CuttingReceivedQty.HeaderText = "Received Qty";
-            this.CuttingReceivedQty.Name = "CuttingReceivedQty";
-            this.CuttingReceivedQty.Width = 120;
-            // 
-            // CuttingRate
-            // 
-            this.CuttingRate.HeaderText = "Rate";
-            this.CuttingRate.Name = "CuttingRate";
-            this.CuttingRate.Width = 64;
-            // 
-            // CuttingAmount
-            // 
-            this.CuttingAmount.HeaderText = "Amount";
-            this.CuttingAmount.Name = "CuttingAmount";
-            this.CuttingAmount.ReadOnly = true;
-            this.CuttingAmount.Width = 84;
-            // 
-            // CuttingNarration
-            // 
-            this.CuttingNarration.HeaderText = "Narration";
-            this.CuttingNarration.Name = "CuttingNarration";
-            this.CuttingNarration.Width = 95;
             // 
             // label29
             // 
@@ -622,6 +580,7 @@
             // 
             // tabFabricUsed
             // 
+            this.tabFabricUsed.Controls.Add(this.label37);
             this.tabFabricUsed.Controls.Add(this.dgvFabricUsed);
             this.tabFabricUsed.Location = new System.Drawing.Point(4, 28);
             this.tabFabricUsed.Name = "tabFabricUsed";
@@ -630,6 +589,18 @@
             this.tabFabricUsed.TabIndex = 1;
             this.tabFabricUsed.Text = "Fabric Used";
             this.tabFabricUsed.UseVisualStyleBackColor = true;
+            // 
+            // label37
+            // 
+            this.label37.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Calibri", 8F);
+            this.label37.ForeColor = System.Drawing.Color.Red;
+            this.label37.Location = new System.Drawing.Point(605, 0);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(321, 13);
+            this.label37.TabIndex = 1;
+            this.label37.Text = "* To delete any rows, click \'F8\' from keyboard after selecting any cell";
             // 
             // dgvFabricUsed
             // 
@@ -647,14 +618,15 @@
             this.UsedMtr,
             this.Rate,
             this.Amount});
-            this.dgvFabricUsed.Location = new System.Drawing.Point(9, 6);
+            this.dgvFabricUsed.Location = new System.Drawing.Point(9, 16);
             this.dgvFabricUsed.Name = "dgvFabricUsed";
             this.dgvFabricUsed.RowHeadersVisible = false;
-            this.dgvFabricUsed.Size = new System.Drawing.Size(917, 312);
+            this.dgvFabricUsed.Size = new System.Drawing.Size(917, 272);
             this.dgvFabricUsed.TabIndex = 0;
             this.dgvFabricUsed.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFabricUsed_CellValueChanged);
             this.dgvFabricUsed.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvFabricUsed_RowsAdded);
             this.dgvFabricUsed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvFabricUsed_EditingControlShowing);
+            this.dgvFabricUsed.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvFabricUsed_KeyDown);
             // 
             // SrNo
             // 
@@ -734,6 +706,7 @@
             // 
             // tpWashingProcess
             // 
+            this.tpWashingProcess.Controls.Add(this.label39);
             this.tpWashingProcess.Controls.Add(this.label33);
             this.tpWashingProcess.Controls.Add(this.txtWashingRate);
             this.tpWashingProcess.Controls.Add(this.label17);
@@ -757,6 +730,18 @@
             this.tpWashingProcess.TabIndex = 4;
             this.tpWashingProcess.Text = "Washing Process";
             this.tpWashingProcess.UseVisualStyleBackColor = true;
+            // 
+            // label39
+            // 
+            this.label39.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Calibri", 8F);
+            this.label39.ForeColor = System.Drawing.Color.Red;
+            this.label39.Location = new System.Drawing.Point(623, 77);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(321, 13);
+            this.label39.TabIndex = 40;
+            this.label39.Text = "* To delete any rows, click \'F8\' from keyboard after selecting any cell";
             // 
             // label33
             // 
@@ -796,6 +781,7 @@
             this.cmbWashingJobberName.Size = new System.Drawing.Size(828, 27);
             this.cmbWashingJobberName.TabIndex = 0;
             this.cmbWashingJobberName.SelectedIndexChanged += new System.EventHandler(this.cmbWashingJobberName_SelectedIndexChanged);
+            this.cmbWashingJobberName.Validated += new System.EventHandler(this.cmbWashingJobberName_Validated);
             // 
             // txtWashingCostPerPcs
             // 
@@ -857,8 +843,10 @@
             // txtWashingReceivedQty
             // 
             this.txtWashingReceivedQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtWashingReceivedQty.Enabled = false;
             this.txtWashingReceivedQty.Location = new System.Drawing.Point(720, 42);
             this.txtWashingReceivedQty.Name = "txtWashingReceivedQty";
+            this.txtWashingReceivedQty.ReadOnly = true;
             this.txtWashingReceivedQty.Size = new System.Drawing.Size(74, 27);
             this.txtWashingReceivedQty.TabIndex = 4;
             this.txtWashingReceivedQty.Validated += new System.EventHandler(this.txtWashingReceivedQty_Validated);
@@ -930,57 +918,21 @@
             this.WashingQty,
             this.WashingRate,
             this.WashingAmount,
-            this.WashingNarration});
-            this.dgvWashingProcess.Location = new System.Drawing.Point(7, 78);
+            this.WashingNarration,
+            this.IsWBilled});
+            this.dgvWashingProcess.Location = new System.Drawing.Point(7, 93);
             this.dgvWashingProcess.Name = "dgvWashingProcess";
             this.dgvWashingProcess.RowHeadersVisible = false;
-            this.dgvWashingProcess.Size = new System.Drawing.Size(937, 238);
+            this.dgvWashingProcess.Size = new System.Drawing.Size(937, 223);
             this.dgvWashingProcess.TabIndex = 6;
             this.dgvWashingProcess.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvWashingProcess_CellValueChanged);
             this.dgvWashingProcess.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvWashingProcess_RowsAdded);
             this.dgvWashingProcess.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvWashingProcess_EditingControlShowing);
-            // 
-            // WashingSrNo
-            // 
-            this.WashingSrNo.HeaderText = "Sr No";
-            this.WashingSrNo.Name = "WashingSrNo";
-            this.WashingSrNo.ReadOnly = true;
-            this.WashingSrNo.Width = 68;
-            // 
-            // WashingJobberName
-            // 
-            this.WashingJobberName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.WashingJobberName.HeaderText = "Jobber Name";
-            this.WashingJobberName.Name = "WashingJobberName";
-            this.WashingJobberName.Width = 99;
-            // 
-            // WashingQty
-            // 
-            this.WashingQty.HeaderText = "Qty";
-            this.WashingQty.Name = "WashingQty";
-            this.WashingQty.Width = 57;
-            // 
-            // WashingRate
-            // 
-            this.WashingRate.HeaderText = "Rate";
-            this.WashingRate.Name = "WashingRate";
-            this.WashingRate.Width = 64;
-            // 
-            // WashingAmount
-            // 
-            this.WashingAmount.HeaderText = "Amount";
-            this.WashingAmount.Name = "WashingAmount";
-            this.WashingAmount.ReadOnly = true;
-            this.WashingAmount.Width = 84;
-            // 
-            // WashingNarration
-            // 
-            this.WashingNarration.HeaderText = "Narration";
-            this.WashingNarration.Name = "WashingNarration";
-            this.WashingNarration.Width = 95;
+            this.dgvWashingProcess.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvWashingProcess_KeyDown);
             // 
             // tpPressProcess
             // 
+            this.tpPressProcess.Controls.Add(this.label40);
             this.tpPressProcess.Controls.Add(this.label34);
             this.tpPressProcess.Controls.Add(this.txtPressingRate);
             this.tpPressProcess.Controls.Add(this.dgvPressingProcess);
@@ -1004,6 +956,18 @@
             this.tpPressProcess.TabIndex = 5;
             this.tpPressProcess.Text = "Pressing Process";
             this.tpPressProcess.UseVisualStyleBackColor = true;
+            // 
+            // label40
+            // 
+            this.label40.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Calibri", 8F);
+            this.label40.ForeColor = System.Drawing.Color.Red;
+            this.label40.Location = new System.Drawing.Point(623, 71);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(321, 13);
+            this.label40.TabIndex = 42;
+            this.label40.Text = "* To delete any rows, click \'F8\' from keyboard after selecting any cell";
             // 
             // label34
             // 
@@ -1039,54 +1003,17 @@
             this.PressingQty,
             this.PressingRate,
             this.PressingAmount,
-            this.PressingNarr});
-            this.dgvPressingProcess.Location = new System.Drawing.Point(7, 77);
+            this.PressingNarr,
+            this.IsPBilled});
+            this.dgvPressingProcess.Location = new System.Drawing.Point(7, 87);
             this.dgvPressingProcess.Name = "dgvPressingProcess";
             this.dgvPressingProcess.RowHeadersVisible = false;
-            this.dgvPressingProcess.Size = new System.Drawing.Size(937, 237);
+            this.dgvPressingProcess.Size = new System.Drawing.Size(937, 227);
             this.dgvPressingProcess.TabIndex = 6;
             this.dgvPressingProcess.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPressingProcess_CellValueChanged);
             this.dgvPressingProcess.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvPressingProcess_RowsAdded);
             this.dgvPressingProcess.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvPressingProcess_EditingControlShowing);
-            // 
-            // PressingSrNo
-            // 
-            this.PressingSrNo.HeaderText = "Sr No";
-            this.PressingSrNo.Name = "PressingSrNo";
-            this.PressingSrNo.ReadOnly = true;
-            this.PressingSrNo.Width = 68;
-            // 
-            // PressingJobber
-            // 
-            this.PressingJobber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.PressingJobber.HeaderText = "Jobber Name";
-            this.PressingJobber.Name = "PressingJobber";
-            this.PressingJobber.Width = 99;
-            // 
-            // PressingQty
-            // 
-            this.PressingQty.HeaderText = "Qty";
-            this.PressingQty.Name = "PressingQty";
-            this.PressingQty.Width = 57;
-            // 
-            // PressingRate
-            // 
-            this.PressingRate.HeaderText = "Rate";
-            this.PressingRate.Name = "PressingRate";
-            this.PressingRate.Width = 64;
-            // 
-            // PressingAmount
-            // 
-            this.PressingAmount.HeaderText = "Amount";
-            this.PressingAmount.Name = "PressingAmount";
-            this.PressingAmount.ReadOnly = true;
-            this.PressingAmount.Width = 84;
-            // 
-            // PressingNarr
-            // 
-            this.PressingNarr.HeaderText = "Narration";
-            this.PressingNarr.Name = "PressingNarr";
-            this.PressingNarr.Width = 95;
+            this.dgvPressingProcess.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvPressingProcess_KeyDown);
             // 
             // label24
             // 
@@ -1106,6 +1033,7 @@
             this.cmbPressingJobberName.Name = "cmbPressingJobberName";
             this.cmbPressingJobberName.Size = new System.Drawing.Size(834, 27);
             this.cmbPressingJobberName.TabIndex = 0;
+            this.cmbPressingJobberName.Validated += new System.EventHandler(this.cmbPressingJobberName_Validated);
             // 
             // txtPressingCostPerPcs
             // 
@@ -1169,6 +1097,7 @@
             this.txtPressReceivedQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPressReceivedQty.Location = new System.Drawing.Point(716, 41);
             this.txtPressReceivedQty.Name = "txtPressReceivedQty";
+            this.txtPressReceivedQty.ReadOnly = true;
             this.txtPressReceivedQty.Size = new System.Drawing.Size(74, 27);
             this.txtPressReceivedQty.TabIndex = 4;
             this.txtPressReceivedQty.Validated += new System.EventHandler(this.txtPressReceivedQty_Validated);
@@ -1227,6 +1156,7 @@
             // 
             // tpUsedItems
             // 
+            this.tpUsedItems.Controls.Add(this.label41);
             this.tpUsedItems.Controls.Add(this.txtOthCostPrPcs);
             this.tpUsedItems.Controls.Add(this.label35);
             this.tpUsedItems.Controls.Add(this.txtOthTotalAmount);
@@ -1238,6 +1168,18 @@
             this.tpUsedItems.TabIndex = 2;
             this.tpUsedItems.Text = "Items/Accessories Used";
             this.tpUsedItems.UseVisualStyleBackColor = true;
+            // 
+            // label41
+            // 
+            this.label41.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label41.AutoSize = true;
+            this.label41.Font = new System.Drawing.Font("Calibri", 8F);
+            this.label41.ForeColor = System.Drawing.Color.Red;
+            this.label41.Location = new System.Drawing.Point(625, 8);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(321, 13);
+            this.label41.TabIndex = 40;
+            this.label41.Text = "* To delete any rows, click \'F8\' from keyboard after selecting any cell";
             // 
             // txtOthCostPrPcs
             // 
@@ -1293,14 +1235,15 @@
             this.OthQty,
             this.OthRate,
             this.OthAmount});
-            this.dgvItemUsed.Location = new System.Drawing.Point(7, 7);
+            this.dgvItemUsed.Location = new System.Drawing.Point(7, 24);
             this.dgvItemUsed.Name = "dgvItemUsed";
             this.dgvItemUsed.RowHeadersVisible = false;
-            this.dgvItemUsed.Size = new System.Drawing.Size(939, 305);
+            this.dgvItemUsed.Size = new System.Drawing.Size(939, 288);
             this.dgvItemUsed.TabIndex = 1;
             this.dgvItemUsed.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItemUsed_CellValueChanged);
             this.dgvItemUsed.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvItemUsed_RowsAdded);
             this.dgvItemUsed.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvItemUsed_EditingControlShowing);
+            this.dgvItemUsed.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvItemUsed_KeyDown);
             // 
             // OthSrNo
             // 
@@ -1480,6 +1423,173 @@
             this.lblExpertLinks.Text = "label2";
             this.lblExpertLinks.Visible = false;
             // 
+            // PressingSrNo
+            // 
+            this.PressingSrNo.HeaderText = "Sr No";
+            this.PressingSrNo.Name = "PressingSrNo";
+            this.PressingSrNo.ReadOnly = true;
+            this.PressingSrNo.Width = 68;
+            // 
+            // PressingJobber
+            // 
+            this.PressingJobber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.PressingJobber.HeaderText = "Jobber Name";
+            this.PressingJobber.Name = "PressingJobber";
+            this.PressingJobber.Visible = false;
+            this.PressingJobber.Width = 99;
+            // 
+            // PressingQty
+            // 
+            this.PressingQty.HeaderText = "Qty";
+            this.PressingQty.Name = "PressingQty";
+            this.PressingQty.Width = 57;
+            // 
+            // PressingRate
+            // 
+            this.PressingRate.HeaderText = "Rate";
+            this.PressingRate.Name = "PressingRate";
+            this.PressingRate.Width = 64;
+            // 
+            // PressingAmount
+            // 
+            this.PressingAmount.HeaderText = "Amount";
+            this.PressingAmount.Name = "PressingAmount";
+            this.PressingAmount.ReadOnly = true;
+            this.PressingAmount.Width = 84;
+            // 
+            // PressingNarr
+            // 
+            this.PressingNarr.HeaderText = "Narration";
+            this.PressingNarr.Name = "PressingNarr";
+            this.PressingNarr.Width = 95;
+            // 
+            // IsPBilled
+            // 
+            this.IsPBilled.HeaderText = "IsPBilled";
+            this.IsPBilled.Name = "IsPBilled";
+            this.IsPBilled.Visible = false;
+            this.IsPBilled.Width = 90;
+            // 
+            // WashingSrNo
+            // 
+            this.WashingSrNo.HeaderText = "Sr No";
+            this.WashingSrNo.Name = "WashingSrNo";
+            this.WashingSrNo.ReadOnly = true;
+            this.WashingSrNo.Width = 68;
+            // 
+            // WashingJobberName
+            // 
+            this.WashingJobberName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.WashingJobberName.HeaderText = "Jobber Name";
+            this.WashingJobberName.Name = "WashingJobberName";
+            this.WashingJobberName.Visible = false;
+            this.WashingJobberName.Width = 99;
+            // 
+            // WashingQty
+            // 
+            this.WashingQty.HeaderText = "Qty";
+            this.WashingQty.Name = "WashingQty";
+            this.WashingQty.Width = 57;
+            // 
+            // WashingRate
+            // 
+            this.WashingRate.HeaderText = "Rate";
+            this.WashingRate.Name = "WashingRate";
+            this.WashingRate.Width = 64;
+            // 
+            // WashingAmount
+            // 
+            this.WashingAmount.HeaderText = "Amount";
+            this.WashingAmount.Name = "WashingAmount";
+            this.WashingAmount.ReadOnly = true;
+            this.WashingAmount.Width = 84;
+            // 
+            // WashingNarration
+            // 
+            this.WashingNarration.HeaderText = "Narration";
+            this.WashingNarration.Name = "WashingNarration";
+            this.WashingNarration.Width = 95;
+            // 
+            // IsWBilled
+            // 
+            this.IsWBilled.HeaderText = "IsWBilled";
+            this.IsWBilled.Name = "IsWBilled";
+            this.IsWBilled.Visible = false;
+            this.IsWBilled.Width = 96;
+            // 
+            // CuttingSrNo
+            // 
+            this.CuttingSrNo.HeaderText = "Sr No";
+            this.CuttingSrNo.Name = "CuttingSrNo";
+            this.CuttingSrNo.ReadOnly = true;
+            this.CuttingSrNo.Width = 68;
+            // 
+            // CuttingJobberName
+            // 
+            this.CuttingJobberName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.CuttingJobberName.HeaderText = "Jobber Name";
+            this.CuttingJobberName.Name = "CuttingJobberName";
+            this.CuttingJobberName.Width = 99;
+            // 
+            // CuttingType
+            // 
+            this.CuttingType.HeaderText = "Type";
+            this.CuttingType.Name = "CuttingType";
+            this.CuttingType.ReadOnly = true;
+            this.CuttingType.Width = 64;
+            // 
+            // CuttingIssueDate
+            // 
+            this.CuttingIssueDate.HeaderText = "Issue Date";
+            this.CuttingIssueDate.Name = "CuttingIssueDate";
+            this.CuttingIssueDate.ReadOnly = true;
+            this.CuttingIssueDate.Width = 103;
+            // 
+            // CuttingIssuedQty
+            // 
+            this.CuttingIssuedQty.HeaderText = "Issued Qty";
+            this.CuttingIssuedQty.Name = "CuttingIssuedQty";
+            this.CuttingIssuedQty.Width = 103;
+            // 
+            // CuttingReceivedDate
+            // 
+            this.CuttingReceivedDate.HeaderText = "Received Date";
+            this.CuttingReceivedDate.Name = "CuttingReceivedDate";
+            this.CuttingReceivedDate.ReadOnly = true;
+            this.CuttingReceivedDate.Width = 128;
+            // 
+            // CuttingReceivedQty
+            // 
+            this.CuttingReceivedQty.HeaderText = "Received Qty";
+            this.CuttingReceivedQty.Name = "CuttingReceivedQty";
+            this.CuttingReceivedQty.Width = 120;
+            // 
+            // CuttingRate
+            // 
+            this.CuttingRate.HeaderText = "Rate";
+            this.CuttingRate.Name = "CuttingRate";
+            this.CuttingRate.Width = 64;
+            // 
+            // CuttingAmount
+            // 
+            this.CuttingAmount.HeaderText = "Amount";
+            this.CuttingAmount.Name = "CuttingAmount";
+            this.CuttingAmount.ReadOnly = true;
+            this.CuttingAmount.Width = 84;
+            // 
+            // CuttingNarration
+            // 
+            this.CuttingNarration.HeaderText = "Narration";
+            this.CuttingNarration.Name = "CuttingNarration";
+            this.CuttingNarration.Width = 95;
+            // 
+            // IsCBilled
+            // 
+            this.IsCBilled.HeaderText = "IsCBilled";
+            this.IsCBilled.Name = "IsCBilled";
+            this.IsCBilled.Visible = false;
+            this.IsCBilled.Width = 91;
+            // 
             // frmMfgCycle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
@@ -1512,6 +1622,7 @@
             this.tabCutterInfo.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCuttingProcess)).EndInit();
             this.tabFabricUsed.ResumeLayout(false);
+            this.tabFabricUsed.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFabricUsed)).EndInit();
             this.tpWashingProcess.ResumeLayout(false);
             this.tpWashingProcess.PerformLayout();
@@ -1633,6 +1744,26 @@
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox txtOthTotalAmount;
         private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.Label lblExpertLinks;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.Label label41;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WashingSrNo;
+        private System.Windows.Forms.DataGridViewComboBoxColumn WashingJobberName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WashingQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WashingRate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WashingAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn WashingNarration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsWBilled;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PressingSrNo;
+        private System.Windows.Forms.DataGridViewComboBoxColumn PressingJobber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PressingQty;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PressingRate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PressingAmount;
+        private System.Windows.Forms.DataGridViewTextBoxColumn PressingNarr;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsPBilled;
         private System.Windows.Forms.DataGridViewTextBoxColumn CuttingSrNo;
         private System.Windows.Forms.DataGridViewComboBoxColumn CuttingJobberName;
         private System.Windows.Forms.DataGridViewTextBoxColumn CuttingType;
@@ -1643,18 +1774,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CuttingRate;
         private System.Windows.Forms.DataGridViewTextBoxColumn CuttingAmount;
         private System.Windows.Forms.DataGridViewTextBoxColumn CuttingNarration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WashingSrNo;
-        private System.Windows.Forms.DataGridViewComboBoxColumn WashingJobberName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WashingQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WashingRate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WashingAmount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn WashingNarration;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PressingSrNo;
-        private System.Windows.Forms.DataGridViewComboBoxColumn PressingJobber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PressingQty;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PressingRate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PressingAmount;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PressingNarr;
-        private System.Windows.Forms.Label lblExpertLinks;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsCBilled;
     }
 }

@@ -38,5 +38,12 @@ namespace GarmentMfg
         {
             garmentManufacturingCycleToolStripMenuItem_Click(null, null);
         }
+
+        private void autoPurchaseEntryModuleForJobberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmAutoPurchase objAutoPurchase = new frmAutoPurchase();
+            objAutoPurchase.MdiParent = this;
+            objAutoPurchase.Show();
+        }
     }
 }

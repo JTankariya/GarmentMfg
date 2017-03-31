@@ -32,7 +32,26 @@ namespace GarmentMfg
             }
             else
             {
-                dgvCuttingProcess.CurrentCell.Value = cell.Value.ToString("dd/MM/yyyy");
+                if (dgvCuttingProcess.CurrentCell != null)
+                {
+                    if (dgvCuttingProcess.CurrentCell.ColumnIndex == 5)
+                    {
+                        var issueDate = Convert.ToDateTime(dgvCuttingProcess.Rows[dgvCuttingProcess.CurrentCell.RowIndex].Cells["CuttingIssueDate"].Value);
+                        if (issueDate > cell.Value)
+                        {
+                            MessageBox.Show("Received qty can not be less then " + issueDate.ToString("dd/MM/yyyy") + "(issued qty).", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            return;
+                        }
+                        else
+                        {
+                            dgvCuttingProcess.CurrentCell.Value = cell.Value.ToString("dd/MM/yyyy");
+                        }
+                    }
+                    else
+                    {
+                        dgvCuttingProcess.CurrentCell.Value = cell.Value.ToString("dd/MM/yyyy");
+                    }
+                }
             }
         }
 
@@ -67,7 +86,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
             {
                 txtProgramNo.Text = Convert.ToString(dtMain.Rows[0]["NewProgramNo"]);
             }
-            dtpProgramStartDate.Value = dtpProgramFinishedDate.Value = DateTime.Now;
+            dtpProgramStartDate.Value = dtpProgramFinishedDate.Value = DateTime.Now.Date;
             dtpProgramFinishedDate.Checked = false;
             dgvCuttingProcess.Rows.Clear();
             dgvFabricUsed.Rows.Clear();
@@ -143,6 +162,10 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
         {
             Operation.BindGridComboBox(dgvWashingProcess, dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["WashingJobberName"], "select Code,Name from Jobber WHERE UCASE(LEFT(REMARKS,1))='W'", "Name", "Code", "-- Select --");
             dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells[0].Value = dgvWashingProcess.Rows.Count;
+            if (!string.IsNullOrEmpty(currentWasher))
+            {
+                dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["WashingJobberName"].Value = currentWasher;
+            }
         }
 
         private void dgvPressingProcess_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
@@ -193,11 +216,18 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
 
         private void dtpPressEndDate_Validated(object sender, EventArgs e)
         {
-            ((Control)tabProcess.TabPages[3]).Enabled = dtpPressEndDate.Checked;
+            ((Control)tabProcess.TabPages[3]).Enabled = txtPressingRate.Enabled = txtPressReceivedQty.Enabled = dtpPressEndDate.Checked;
         }
 
         private void txtPressReceivedQty_Validated(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(txtPressReceivedQty.Text))
+            {
+                dtpProgramFinishedDate.Checked = true;
+                txtFinishedQty.Text = txtPressReceivedQty.Text;
+                dtpProgramFinishedDate_Validated(null, null);
+            }
+
             if (string.IsNullOrEmpty(txtPressIssuedQty.Text))
             {
                 MessageBox.Show("Issued Qty can not be Empty.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -332,12 +362,14 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
 
         private void dtpPressStartDate_Validated(object sender, EventArgs e)
         {
+            var prevChecked = dtpPressEndDate.Checked;
             dtpPressEndDate.MinDate = dtpPressStartDate.Value;
+            dtpPressEndDate.Checked = prevChecked;
         }
 
         private void txtLotSize_Validated(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtCuttingIssuedQty.Text))
+            if (!string.IsNullOrEmpty(txtLotSize.Text))
             {
                 txtCuttingIssuedQty.Text = txtLotSize.Text;
             }
@@ -428,7 +460,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
 
         private void Numeric_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar.ToString() != ".")
             {
                 e.Handled = true;
             }
@@ -547,7 +579,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
         {
             if (dgvItemUsed.Columns[e.ColumnIndex].Name.ToUpper() == "OTHPRODUCT")
             {
-                Operation.BindGridComboBox(dgvItemUsed, dgvItemUsed.Rows[e.RowIndex].Cells["OTHBATCH"], "select * from Batch where Code = '" + dgvItemUsed.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "'", "BatchNo", "BatchNo", "-- Select Batch --");
+                Operation.BindGridComboBox(dgvItemUsed, dgvItemUsed.Rows[e.RowIndex].Cells["OTHBATCH"], "select BATCHNO,BATCHNO as BATCHVALUE from Batch where Code = '" + dgvItemUsed.Rows[e.RowIndex].Cells[e.ColumnIndex].Value + "'", "BatchNo", "BATCHVALUE", "-- Select Batch --");
             }
             CalculateTotals();
         }
@@ -618,14 +650,36 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
 
         private void dgvCuttingProcess_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvCuttingProcess.CurrentCell != null && dgvCuttingProcess.Columns[e.ColumnIndex].Name.ToString().ToUpper() == "CUTTINGJOBBERNAME")
+            if (dgvCuttingProcess.CurrentCell != null)
             {
-                for (var i = 0; i < dgvCuttingProcess.Rows.Count - 1; i++)
+                if (dgvCuttingProcess.Columns[e.ColumnIndex].Name.ToString().ToUpper() == "CUTTINGJOBBERNAME")
                 {
-                    if (dgvCuttingProcess.Rows[i].Cells["CuttingJobberName"].EditedFormattedValue.ToString().ToUpper() == dgvCuttingProcess.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue.ToString().ToUpper() &&
-                        i != dgvCuttingProcess.CurrentCell.RowIndex)
+                    for (var i = 0; i < dgvCuttingProcess.Rows.Count - 1; i++)
                     {
-                        MessageBox.Show("This jobber is already selected, Please select another jobber.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        if (dgvCuttingProcess.Rows[i].Cells["CuttingJobberName"].EditedFormattedValue.ToString().ToUpper() == dgvCuttingProcess.Rows[e.RowIndex].Cells[e.ColumnIndex].EditedFormattedValue.ToString().ToUpper() &&
+                            i != dgvCuttingProcess.CurrentCell.RowIndex)
+                        {
+                            MessageBox.Show("This jobber is already selected, Please select another jobber.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            dgvCuttingProcess.CurrentCell.Value = "0";
+                            return;
+                        }
+                    }
+                }
+                if (dgvCuttingProcess.Columns[e.ColumnIndex].Name.ToString().ToUpper() == "CUTTINGRECEIVEDQTY")
+                {
+                    var issueQty = Convert.ToString(dgvCuttingProcess.Rows[e.RowIndex].Cells["CuttingIssuedQty"].Value);
+                    if (!string.IsNullOrEmpty(issueQty))
+                    {
+                        if (Convert.ToInt32(dgvCuttingProcess.CurrentCell.Value) > Convert.ToInt32(issueQty))
+                        {
+                            MessageBox.Show("Received qty can not be greater then " + dgvCuttingProcess.CurrentCell.Value + ".", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                            dgvCuttingProcess.CurrentCell.Value = "0";
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter issue qty for this jobber first.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                         dgvCuttingProcess.CurrentCell.Value = "0";
                         return;
                     }
@@ -637,6 +691,12 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
         private void dgvWashingProcess_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             CalculateTotals();
+            decimal washingQty = 0;
+            for (var i = 0; i < dgvWashingProcess.Rows.Count - 1; i++)
+            {
+                washingQty += Convert.ToDecimal(dgvWashingProcess.Rows[i].Cells["WashingQty"] != null ? dgvWashingProcess.Rows[i].Cells["WashingQty"].Value : "0");
+            }
+            txtWashingReceivedQty.Text = Convert.ToString(Math.Round(washingQty, 2));
         }
 
         private void dgvPressingProcess_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -693,13 +753,33 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                 }
                 else
                 {
-                    productCode = Convert.ToString(Operation.GetDataTable("Select MAX(IIF(ISNULL(CODE),100001,VAL(CODE)))+1 as PCODE from Product").Rows[0][0]);
-                    mfgIssueLink = Convert.ToInt32(Operation.GetDataTable("Select MAX(IIF(ISNULL(LINK),100001,RIGHT(LINK,6)))+1 as PCODE from MFG where VTYPE='MI'").Rows[0][0]);
-                    mfgReceiveLink = Convert.ToInt32(Operation.GetDataTable("Select MAX(IIF(ISNULL(LINK),100001,RIGHT(LINK,6)))+1 as PCODE from MFG where VTYPE='MR'").Rows[0][0]);
-                    strQueries.Add("insert into Product(CODE,NAME,BATCH,UNIT1) values('" + productCode + "','" + productName + "',TRUE,'.')");
-                    strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','CUTTING')");
-                    strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','WASHING')");
-                    strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','PRESSING')");
+                    var productExist = Operation.GetDataTable("select CODE from PRODUCT where NAME='" + productName + "'");
+                    if (productExist == null || productExist.Rows.Count == 0)
+                    {
+                        productCode = Convert.ToString(Operation.GetDataTable("Select MAX(IIF(ISNULL(CODE),100001,VAL(CODE)))+1 as PCODE from Product").Rows[0][0]);
+                        strQueries.Add("insert into Product(CODE,NAME,BATCH,UNIT1) values('" + productCode + "','" + productName + "',TRUE,'.')");
+                    }
+                    else
+                    {
+                        productCode = Convert.ToString(productExist.Rows[0][0]);
+                    }
+                    mfgIssueLink = Convert.ToInt32(Operation.GetDataTable("select MAX(PCODE)+1 as PCODE from (Select RIGHT(LINK,6) as PCODE from MFG where VTYPE='MI' UNION select 100000 as PCODE from MFG)").Rows[0][0]);
+                    mfgReceiveLink = Convert.ToInt32(Operation.GetDataTable("select MAX(PCODE)+1 as PCODE from (Select RIGHT(LINK,6) as PCODE from MFG where VTYPE='MR' UNION select 100000 as PCODE from MFG)").Rows[0][0]);
+                    var cuttingExist = Operation.GetDataTable("select BATCHNO from BATCH where CODE='" + productCode + "' and BATCHNO='CUTTING'");
+                    if (cuttingExist == null || cuttingExist.Rows.Count == 0)
+                    {
+                        strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','CUTTING')");
+                    }
+                    var washingExist = Operation.GetDataTable("select BATCHNO from BATCH where CODE='" + productCode + "' and BATCHNO='WASHING'");
+                    if (washingExist == null || washingExist.Rows.Count == 0)
+                    {
+                        strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','WASHING')");
+                    }
+                    var pressingExist = Operation.GetDataTable("select BATCHNO from BATCH where CODE='" + productCode + "' and BATCHNO='PRESSING'");
+                    if (pressingExist == null || pressingExist.Rows.Count == 0)
+                    {
+                        strQueries.Add("insert into Batch(CODE,BATCHNO) values('" + productCode + "','PRESSING')");
+                    }
                     washingIssueLink = mfgIssueLink;
                     pressingIssueLink = washingIssueLink + 1;
                     cuttingReceiveLink = mfgReceiveLink;
@@ -745,7 +825,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                             dtpProgramStartDate.Value.ToString("dd/MM/yyyy") + "','" + txtProgramNo.Text.PadLeft(3, '0') + "/WASHING','" +
                             cmbWashingJobberName.SelectedValue + "')");
                         strQueries.Add("Insert into STOCK(LINK,VTYPE,CODE,BATCHNO,QTY,STK_QTY,UNIT,DOCNO,[DATE],AL,JCODE) values('MI" +
-    washingIssueLink + "','MI','" + productCode + "','WASHING','" + txtWashingIssuedQty.Text + "','" + txtWashingIssuedQty.Text +
+    washingIssueLink + "','MI','" + productCode + "','CUTTING','" + txtWashingIssuedQty.Text + "','" + txtWashingIssuedQty.Text +
     "','.','" + txtProgramNo.Text.PadLeft(3, '0') + "/WASHING','" + dtpWashingStartDate.Value.ToString("dd/MM/yyyy") + "','L','" +
     cmbWashingJobberName.SelectedValue + "')");
                     }
@@ -757,7 +837,8 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                     {
                         strQueries.Add("insert into MFG2(LINK,CODE,BATCHNO,QTY,AL,[DATE],DOCNO,JCODE) values('MR" +
                             cuttingReceiveLink + productCode + "CUTTING','" + dgvFabricUsed.Rows[i].Cells["ProductName"].Value + "','" +
-                            dgvFabricUsed.Rows[i].Cells["BatchNo"].Value + "'," + dgvFabricUsed.Rows[i].Cells["UsedMtr"].Value +
+                            (Convert.ToString(dgvFabricUsed.Rows[i].Cells["BatchNo"].Value) == "0" ? "" : Convert.ToString(dgvFabricUsed.Rows[i].Cells["BatchNo"].Value)) +
+                            "'," + dgvFabricUsed.Rows[i].Cells["UsedMtr"].Value +
                             ",'L','" + dtpCuttingEndDate.Value.ToString("dd/MM/yyyy") + "','" + txtProgramNo.Text.PadLeft(3, '0') +
                             "/CUTTING'," + cmbCuttingJobberName.SelectedValue + ")");
                     }
@@ -793,13 +874,9 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                             dtpProgramStartDate.Value.ToString("dd/MM/yyyy") + "','" + txtProgramNo.Text.PadLeft(3, '0') + "/PRESSING','" +
                             cmbPressingJobberName.SelectedValue + "')");
                         strQueries.Add("Insert into STOCK(LINK,VTYPE,CODE,BATCHNO,QTY,STK_QTY,UNIT,DOCNO,[DATE],AL,JCODE) values('MI" +
-    pressingIssueLink + "','MI','" + productCode + "','PRESSING','" + txtPressIssuedQty.Text + "','" + txtPressIssuedQty.Text +
+    pressingIssueLink + "','MI','" + productCode + "','WASHING','" + txtPressIssuedQty.Text + "','" + txtPressIssuedQty.Text +
     "','.','" + txtProgramNo.Text.PadLeft(3, '0') + "/PRESSING','" + dtpPressStartDate.Value.ToString("dd/MM/yyyy") + "','L','" +
     cmbPressingJobberName.SelectedValue + "')");
-                    }
-                    if (dtpPressEndDate.Checked)
-                    {
-
                     }
                 }
 
@@ -813,7 +890,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                        dtpPressEndDate.Value.ToString("dd/MM/yyyy") + "','" + txtProgramNo.Text.PadLeft(3, '0') + "/PRESSING','" +
                        cmbPressingJobberName.SelectedValue + "')");
                     strQueries.Add("Insert into STOCK(LINK,VTYPE,CODE,BATCHNO,QTY,STK_QTY,UNIT,DOCNO,[DATE],AL,JCODE,BOMNO) values('MR" +
-                        pressingReceiveLink + "','MR','" + productCode + "','PRESSING','" + txtPressReceivedQty.Text + "','" + txtPressReceivedQty.Text +
+                        pressingReceiveLink + "','MR','" + cmbFinishedProductName.SelectedValue + "','','" + txtPressReceivedQty.Text + "','" + txtPressReceivedQty.Text +
                         "','.','" + txtProgramNo.Text.PadLeft(3, '0') + "/PRESSING','" + dtpPressEndDate.Value.ToString("dd/MM/yyyy") + "','A','" +
                         cmbPressingJobberName.SelectedValue + "','XXXX')");
                     strQueries.Add("insert into MFG2(LINK,CODE,BATCHNO,QTY,AL,[DATE],DOCNO,JCODE) values('MR" +
@@ -824,17 +901,17 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                 for (var i = 0; i < dgvPressingProcess.Rows.Count - 1; i++)
                 {
                     strQueries.Add("Insert into [MfgTrans]([PROGRAMNO],[PROCESS],[JOBBER],[QTY],[RATE],[AMOUNT],[NARRATION],[ISSUEDATE]," +
-"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK]) values('" + txtProgramNo.Text + "','P','" + dgvPressingProcess.Rows[i].Cells["PressingJobber"].Value +
+"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK],[IsBilled]) values('" + txtProgramNo.Text + "','P','" + dgvPressingProcess.Rows[i].Cells["PressingJobber"].Value +
 "'," + dgvPressingProcess.Rows[i].Cells["PressingQty"].Value + "," + dgvPressingProcess.Rows[i].Cells["PressingRate"].Value +
 "," + dgvPressingProcess.Rows[i].Cells["PressingAmount"].Value + ",'" + dgvPressingProcess.Rows[i].Cells["PressingNarr"].Value +
-"',NULL,NULL,0,0," + (i + 1) + ")");
+"',NULL,NULL,0,0," + (i + 1) + ",'" + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["IsPBilled"].Value)) ? "N" : Convert.ToString(dgvCuttingProcess.Rows[i].Cells["IsPBilled"].Value)) + "')");
 
                 }
 
                 for (var i = 0; i < dgvItemUsed.Rows.Count - 1; i++)
                 {
                     strQueries.Add("Insert into STOCK(LINK,VTYPE,CODE,BATCHNO,QTY,STK_QTY,UNIT,DOCNO,[DATE],AL,JCODE,BOMNO) values('MI" +
-                        pressingIssueLink + "','MI','" + dgvItemUsed.Rows[i].Cells["OthProduct"].Value + "','" + dgvItemUsed.Rows[i].Cells["OthBatch"].Value +
+                        pressingIssueLink + "','MI','" + dgvItemUsed.Rows[i].Cells["OthProduct"].Value + "','" + (Convert.ToString(dgvItemUsed.Rows[i].Cells["OthBatch"].Value) == "0" ? "" : Convert.ToString(dgvItemUsed.Rows[i].Cells["OthBatch"].Value)) +
                         "','" + dgvItemUsed.Rows[i].Cells["OthQty"].Value + "','" + dgvItemUsed.Rows[i].Cells["OthQty"].Value +
                         "','.','" + txtProgramNo.Text.PadLeft(3, '0') + "/PRESSING','" + dtpPressEndDate.Value.ToString("dd/MM/yyyy") + "','L','" +
                         cmbPressingJobberName.SelectedValue + "','')");
@@ -846,8 +923,9 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                          "','O')");
 
                     strQueries.Add("insert into MFG2(LINK,CODE,BATCHNO,QTY,AL,[DATE],DOCNO,JCODE) values('MR" +
-      pressingReceiveLink + productCode + "PRESSING','" + dgvItemUsed.Rows[i].Cells["OthProduct"].Value + "','" +
-      dgvItemUsed.Rows[i].Cells["OthBatch"].Value + "'," + dgvItemUsed.Rows[i].Cells["OthQty"].Value +
+      pressingReceiveLink + cmbFinishedProductName.SelectedValue + "','" + dgvItemUsed.Rows[i].Cells["OthProduct"].Value + "','" +
+      (Convert.ToString(dgvItemUsed.Rows[i].Cells["OthBatch"].Value) == "0" ? "" : Convert.ToString(dgvItemUsed.Rows[i].Cells["OthBatch"].Value)) +
+      "'," + dgvItemUsed.Rows[i].Cells["OthQty"].Value +
       ",'L','" + dtpPressEndDate.Value.ToString("dd/MM/yyyy") + "','" + txtProgramNo.Text.PadLeft(3, '0') +
       "/PRESSING'," + cmbPressingJobberName.SelectedValue + ")");
                 }
@@ -858,24 +936,28 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                 strQueries.Add("Insert into [MfgCycle]([PROGRAMNO],[STARTDATE],[ENDDATE],[PRODUCT],[LOTSIZE],[FINISHQTY],[CUTTER],[CSTARTDATE]," +
 "[CENDDATE],[CISSUEQTY],[CRCVDQTY],[CCOSTPRPCS],[CTOTALAMT],[AMTRPTPCS],[COSTPRPCS],[FCOSTPRPCS],[OTHEPPRPCS],[WASHER],[WSTARTDATE]," +
 "[WENDDATE],[WISSUEQTY],[WRCVDQTY],[WCOSTPRPCS],[WTOTALAMT],[PRESSER],[PSTARTDATE],[PENDDATE],[PISSUEQTY],[PRCVDQTY],[PCOSTPRPCS]," +
-"[PTOTALAMT],[ENTRYDATE],[CRATE],[WRATE],[PRATE]) values('" + txtProgramNo.Text + "','" + dtpProgramStartDate.Value.ToString("yyyy-MM-dd") + "','" +
+"[PTOTALAMT],[ENTRYDATE],[CRATE],[WRATE],[PRATE],[CRCVLINK],[WISSUELINK],[WRCVLINK],[PISSUELINK],[PRCVLINK],[ISCBILLED],[ISWBILLED],[ISPBILLED]) values('" +
+txtProgramNo.Text + "','" + dtpProgramStartDate.Value.ToString("yyyy-MM-dd") + "','" +
 dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.SelectedValue + "'," + txtLotSize.Text + "," +
 (string.IsNullOrEmpty(txtFinishedQty.Text) ? "0" : txtFinishedQty.Text) +
-",'" + cmbCuttingJobberName.SelectedValue + "','" + dtpCuttingStartDate.Value.ToString("yyyy-MM-dd") + "','" + dtpCuttingEndDate.Value.ToString("yyyy-MM-dd") +
-"'," + txtCuttingIssuedQty.Text + "," + (string.IsNullOrEmpty(txtCuttingReceivedQty.Text) ? "0" : txtCuttingReceivedQty.Text) +
+",'" + cmbCuttingJobberName.SelectedValue + "','" + dtpCuttingStartDate.Value.ToString("yyyy-MM-dd") + "'," + (dtpCuttingEndDate.Checked ? "'" + dtpCuttingEndDate.Value.ToString("yyyy-MM-dd") + "'" : "NULL") +
+"," + txtCuttingIssuedQty.Text + "," + (string.IsNullOrEmpty(txtCuttingReceivedQty.Text) ? "0" : txtCuttingReceivedQty.Text) +
 "," + txtCuttingCostPerPcs.Text + "," + txtCuttingTotalAmount.Text +
 "," + txtAverageMtrPerPcs.Text + "," + txtCostingPerPcs.Text + "," + txtFabricCostPerPcs.Text + "," + txtOthCostPrPcs.Text +
-",'" + cmbWashingJobberName.SelectedValue + "','" + dtpWashingStartDate.Value.ToString("yyyy-MM-dd") + "','" + dtpWashingEndDate.Value.ToString("yyyy-MM-dd") +
-"'," + (string.IsNullOrEmpty(txtWashingIssuedQty.Text) ? "0" : txtWashingIssuedQty.Text) + "," + (string.IsNullOrEmpty(txtWashingReceivedQty.Text) ? "0" : txtWashingReceivedQty.Text) +
+",'" + cmbWashingJobberName.SelectedValue + "','" + dtpWashingStartDate.Value.ToString("yyyy-MM-dd") + "'," + (dtpWashingEndDate.Checked ? "'" + dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "'" : "NULL") +
+"," + (string.IsNullOrEmpty(txtWashingIssuedQty.Text) ? "0" : txtWashingIssuedQty.Text) + "," + (string.IsNullOrEmpty(txtWashingReceivedQty.Text) ? "0" : txtWashingReceivedQty.Text) +
 "," + txtWashingCostPerPcs.Text + "," + txtWashingTotalAmount.Text +
-",'" + cmbPressingJobberName.SelectedValue + "','" + dtpPressStartDate.Value.ToString("yyyy-MM-dd") + "','" + dtpPressEndDate.Value.ToString("yyyy-MM-dd") +
-"'," + (string.IsNullOrEmpty(txtPressIssuedQty.Text) ? "0" : txtPressIssuedQty.Text) + "," + (string.IsNullOrEmpty(txtPressReceivedQty.Text) ? "0" : txtPressReceivedQty.Text) +
-"," + txtPressingCostPerPcs.Text + "," + txtPressingTotalAmount.Text + ",'" + DateTime.Now.ToString("yyyy-MM-dd") + "'," + txtCuttingRate.Text + ",'" + txtWashingRate.Text + "','" + txtPressingRate.Text + "')");
+",'" + cmbPressingJobberName.SelectedValue + "','" + dtpPressStartDate.Value.ToString("yyyy-MM-dd") + "'," + (dtpPressEndDate.Checked ? "'" + dtpPressEndDate.Value.ToString("yyyy-MM-dd") + "'" : "NULL") +
+"," + (string.IsNullOrEmpty(txtPressIssuedQty.Text) ? "0" : txtPressIssuedQty.Text) + "," + (string.IsNullOrEmpty(txtPressReceivedQty.Text) ? "0" : txtPressReceivedQty.Text) +
+"," + txtPressingCostPerPcs.Text + "," + txtPressingTotalAmount.Text + ",'" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
+txtCuttingRate.Text + ",'" + txtWashingRate.Text + "','" + txtPressingRate.Text + "','" + cuttingReceiveLink + "','" +
+washingIssueLink + "','" + washingReceiveLink + "','" + pressingIssueLink + "','" + pressingReceiveLink + "','" + 
+cmbCuttingJobberName.Enabled ? "Y" : "N" + "','" + cmbWashingJobberName.Enabled ? "Y" : "N" + "','" + cmbPressingJobberName.Enabled ? "Y" : "N" + "')");
 
                 for (var i = 0; i < dgvCuttingProcess.Rows.Count - 1; i++)
                 {
                     strQueries.Add("Insert into [MfgTrans]([PROGRAMNO],[PROCESS],[JOBBER],[QTY],[RATE],[AMOUNT],[NARRATION],[ISSUEDATE]," +
-"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK]) values('" + txtProgramNo.Text + "','C','" + dgvCuttingProcess.Rows[i].Cells["CuttingJobberName"].Value +
+"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK],[IsBilled]) values('" + txtProgramNo.Text + "','C','" + dgvCuttingProcess.Rows[i].Cells["CuttingJobberName"].Value +
 "',0," + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingRate"].Value)) ? "0" : dgvCuttingProcess.Rows[i].Cells["CuttingRate"].Value) +
 "," + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingAmount"].Value)) ? "0" : dgvCuttingProcess.Rows[i].Cells["CuttingAmount"].Value) +
 ",'" + dgvCuttingProcess.Rows[i].Cells["CuttingNarration"].Value +
@@ -883,16 +965,16 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
 "," + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingReceivedDate"].Value)) ? "NULL" : "'" + dgvCuttingProcess.Rows[i].Cells["CuttingReceivedDate"].Value + "'") +
 "," + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingIssuedQty"].Value)) ? "0" : Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingIssuedQty"].Value)) +
 "," + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingReceivedQty"].Value)) ? "0" : Convert.ToString(dgvCuttingProcess.Rows[i].Cells["CuttingReceivedQty"].Value)) +
-"," + (i + 1) + ")");
+"," + (i + 1) + ",'" + (string.IsNullOrEmpty(Convert.ToString(dgvCuttingProcess.Rows[i].Cells["IsCBilled"].Value)) ? "N" : Convert.ToString(dgvCuttingProcess.Rows[i].Cells["IsCBilled"].Value)) + "')");
                 }
 
                 for (var i = 0; i < dgvWashingProcess.Rows.Count - 1; i++)
                 {
                     strQueries.Add("Insert into [MfgTrans]([PROGRAMNO],[PROCESS],[JOBBER],[QTY],[RATE],[AMOUNT],[NARRATION],[ISSUEDATE]," +
-"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK]) values('" + txtProgramNo.Text + "','W','" + dgvWashingProcess.Rows[i].Cells["WashingJobberName"].Value +
+"[RCVDDATE],[ISSUEDQTY],[RCVDQTY],[LINK],[IsBilled]) values('" + txtProgramNo.Text + "','W','" + dgvWashingProcess.Rows[i].Cells["WashingJobberName"].Value +
 "'," + dgvWashingProcess.Rows[i].Cells["WashingQty"].Value + "," + dgvWashingProcess.Rows[i].Cells["WashingRate"].Value +
 "," + dgvWashingProcess.Rows[i].Cells["WashingAmount"].Value + ",'" + dgvWashingProcess.Rows[i].Cells["WashingNarration"].Value +
-"',NULL,NULL,0,0," + (i + 1) + ")");
+"',NULL,NULL,0,0," + (i + 1) + ",'" + (string.IsNullOrEmpty(Convert.ToString(dgvWashingProcess.Rows[i].Cells["IsWBilled"].Value)) ? "N" : Convert.ToString(dgvWashingProcess.Rows[i].Cells["IsWBilled"].Value)) + "')");
                 }
 
                 if (Operation.ExecuteTransaction(strQueries))
@@ -1043,6 +1125,13 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                         dgvFabricUsed.Focus();
                         return false;
                     }
+                    DataTable dt = (DataTable)((DataGridViewComboBoxCell)dgvFabricUsed.Rows[i].Cells["BatchNo"]).DataSource;
+                    if (dt.Rows.Count > 1 && Convert.ToString(dgvFabricUsed.Rows[i].Cells["BatchNo"].Value) == "0")
+                    {
+                        MessageBox.Show("Batch name can not be empty in fabric's collection.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        dgvItemUsed.Focus();
+                        return false;
+                    }
                     if (string.IsNullOrEmpty(Convert.ToString(dgvFabricUsed.Rows[i].Cells["UsedMtr"].Value)))
                     {
                         MessageBox.Show("Used Mtr can not be empty in fabric's collection.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -1115,6 +1204,13 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                         dgvItemUsed.Focus();
                         return false;
                     }
+                    DataTable dt = (DataTable)((DataGridViewComboBoxCell)dgvItemUsed.Rows[i].Cells["OthBatch"]).DataSource;
+                    if (dt.Rows.Count > 1 && Convert.ToString(dgvItemUsed.Rows[i].Cells["OthBatch"].Value) == "0")
+                    {
+                        MessageBox.Show("Batch name can not be empty in items's collection.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        dgvItemUsed.Focus();
+                        return false;
+                    }
                     if (string.IsNullOrEmpty(Convert.ToString(dgvItemUsed.Rows[i].Cells["OthQty"].Value)))
                     {
                         MessageBox.Show("Qty can not be empty in items's collection.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -1174,6 +1270,7 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                 txtLotSize.Text = Convert.ToString(dtMain.Rows[0]["LotSize"]);
                 txtFinishedQty.Text = Convert.ToString(dtMain.Rows[0]["FinishQty"]);
                 cmbCuttingJobberName.SelectedValue = Convert.ToString(dtMain.Rows[0]["Cutter"]);
+                cmbCuttingJobberName.Enabled = Convert.ToString(dtMain.Rows[0]["IsCBilled"]) == "N";
                 dtpCuttingStartDate.Value = Convert.ToDateTime(dtMain.Rows[0]["CStartDate"].ToString());
                 if (string.IsNullOrEmpty(Convert.ToString(dtMain.Rows[0]["CEndDate"])))
                 {
@@ -1233,7 +1330,7 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                 else
                 {
                     dtpPressEndDate.Checked = true;
-                    dtpPressEndDate.Value = Convert.ToDateTime(Convert.ToString(dtMain.Rows[0]["PENDDATE"]));
+                    dtpPressEndDate.Value = Convert.ToDateTime(dtMain.Rows[0]["PENDDATE"]);
                     dtpPressEndDate_Validated(null, null);
                     txtPressReceivedQty.Text = Convert.ToString(dtMain.Rows[0]["PRCVDQTY"]);
                     txtPressingRate.Text = Convert.ToString(dtMain.Rows[0]["PRATE"]);
@@ -1259,12 +1356,14 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                     dgvCuttingProcess.Rows[dgvCuttingProcess.Rows.Count - 1].Cells["CuttingIssuedQty"].Value = cuttingRecs.Rows[i]["ISSUEDQTY"].ToString();
                     dgvCuttingProcess.Rows[dgvCuttingProcess.Rows.Count - 1].Cells["CuttingReceivedQty"].Value = cuttingRecs.Rows[i]["RCVDQTY"].ToString();
                     dgvCuttingProcess.Rows[dgvCuttingProcess.Rows.Count - 1].Cells["CuttingNarration"].Value = cuttingRecs.Rows[i]["NARRATION"].ToString();
+                    dgvCuttingProcess.Rows[dgvCuttingProcess.Rows.Count - 1].Cells["IsCBilled"].Value = cuttingRecs.Rows[i]["IsBilled"].ToString();
                 }
                 dgvCuttingProcess.AllowUserToAddRows = true;
                 dtTrans.DefaultView.RowFilter = "Process='W'";
                 var washingRecs = dtTrans.DefaultView.ToTable();
                 dgvWashingProcess.Rows.Clear();
                 dgvWashingProcess.AllowUserToAddRows = false;
+                var isFound = false;
                 for (var i = 0; i < washingRecs.Rows.Count; i++)
                 {
                     dgvWashingProcess.Rows.Add();
@@ -1272,6 +1371,17 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                     dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["WashingQty"].Value = washingRecs.Rows[i]["Qty"].ToString();
                     dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["WashingRate"].Value = washingRecs.Rows[i]["Rate"].ToString();
                     dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["WashingNarration"].Value = washingRecs.Rows[i]["NARRATION"].ToString();
+                    dgvWashingProcess.Rows[dgvWashingProcess.Rows.Count - 1].Cells["IsWBilled"].Value = washingRecs.Rows[i]["IsBilled"].ToString();
+                    if (!isFound)
+                        isFound = washingRecs.Rows[i]["IsBilled"].ToString() == "Y";
+                }
+                if (isFound)
+                {
+                    cmbWashingJobberName.Enabled = false;
+                }
+                else
+                {
+                    cmbWashingJobberName.Enabled = true;
                 }
                 dgvWashingProcess.AllowUserToAddRows = true;
                 dtTrans.DefaultView.RowFilter = "Process='P'";
@@ -1285,6 +1395,7 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
                     dgvPressingProcess.Rows[dgvPressingProcess.Rows.Count - 1].Cells["PressingQty"].Value = pressingRecs.Rows[i]["Qty"].ToString();
                     dgvPressingProcess.Rows[dgvPressingProcess.Rows.Count - 1].Cells["PressingRate"].Value = pressingRecs.Rows[i]["Rate"].ToString();
                     dgvPressingProcess.Rows[dgvPressingProcess.Rows.Count - 1].Cells["PressingNarr"].Value = pressingRecs.Rows[i]["NARRATION"].ToString();
+                    dgvPressingProcess.Rows[dgvPressingProcess.Rows.Count - 1].Cells["IsPBilled"].Value = pressingRecs.Rows[i]["IsBilled"].ToString();
                 }
                 dgvPressingProcess.AllowUserToAddRows = true;
             }
@@ -1353,26 +1464,185 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
 
         private void dgvCuttingProcess_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Delete &&
+            if (e.KeyCode == Keys.F8 &&
                dgvCuttingProcess.CurrentCell != null &&
                dgvCuttingProcess.CurrentCell.RowIndex >= 0 &&
                dgvCuttingProcess.CurrentCell.ColumnIndex >= 0 &&
+Convert.ToString(dgvCuttingProcess.Rows[dgvCuttingProcess.CurrentCell.RowIndex].Cells["IsCBilled"].Value) != "Y" &&
                MessageBox.Show("Are you sure want to delete this Record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 dgvCuttingProcess.Rows.RemoveAt(dgvCuttingProcess.CurrentCell.RowIndex);
+                reindexSrNo(dgvCuttingProcess);
                 CalculateTotals();
+            }
+            else if (Convert.ToString(dgvCuttingProcess.Rows[dgvCuttingProcess.CurrentCell.RowIndex].Cells["IsCBilled"].Value) == "Y" && e.KeyCode == Keys.F8)
+            {
+                MessageBox.Show("Bill against this entry is done, can not delete this row", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
 
         private void cmbWashingJobberName_SelectedIndexChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private string currentWasher = "";
+        private string currentPresser = "";
+        private void setCurrentWasher(string washer)
+        {
+            if (!string.IsNullOrEmpty(washer))
+            {
+                currentWasher = washer;
+                for (var i = 0; i < dgvWashingProcess.Rows.Count; i++)
+                {
+                    dgvWashingProcess.Rows[i].Cells["WashingJobberName"].Value = washer;
+                }
+            }
+        }
+
+        private void dgvFabricUsed_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F8 &&
+               dgvFabricUsed.CurrentCell != null &&
+               dgvFabricUsed.CurrentCell.RowIndex >= 0 &&
+               dgvFabricUsed.CurrentCell.ColumnIndex >= 0 &&
+               MessageBox.Show("Are you sure want to delete this Record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dgvFabricUsed.Rows.RemoveAt(dgvFabricUsed.CurrentCell.RowIndex);
+                reindexSrNo(dgvFabricUsed);
+                CalculateTotals();
+            }
+        }
+
+        private void dgvWashingProcess_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F8 &&
+               dgvWashingProcess.CurrentCell != null &&
+               dgvWashingProcess.CurrentCell.RowIndex >= 0 &&
+               dgvWashingProcess.CurrentCell.ColumnIndex >= 0 &&
+               Convert.ToString(dgvWashingProcess.Rows[dgvWashingProcess.CurrentCell.RowIndex].Cells["IsWBilled"].Value) != "Y" &&
+               MessageBox.Show("Are you sure want to delete this Record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dgvWashingProcess.Rows.RemoveAt(dgvWashingProcess.CurrentCell.RowIndex);
+                reindexSrNo(dgvWashingProcess);
+                CalculateTotals();
+            }
+            else if (Convert.ToString(dgvWashingProcess.Rows[dgvWashingProcess.CurrentCell.RowIndex].Cells["IsWBilled"].Value) == "Y" && e.KeyCode == Keys.F8)
+            {
+                MessageBox.Show("Bill against this entry is done, can not delete this row", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
+        private void dgvPressingProcess_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F8 &&
+               dgvPressingProcess.CurrentCell != null &&
+               dgvPressingProcess.CurrentCell.RowIndex >= 0 &&
+               dgvPressingProcess.CurrentCell.ColumnIndex >= 0 &&
+               Convert.ToString(dgvPressingProcess.Rows[dgvPressingProcess.CurrentCell.RowIndex].Cells["IsPBilled"].Value) != "Y" &&
+               MessageBox.Show("Are you sure want to delete this Record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dgvPressingProcess.Rows.RemoveAt(dgvPressingProcess.CurrentCell.RowIndex);
+                reindexSrNo(dgvPressingProcess);
+                CalculateTotals();
+            }
+            else if (Convert.ToString(dgvPressingProcess.Rows[dgvPressingProcess.CurrentCell.RowIndex].Cells["IsPBilled"].Value) == "Y" && e.KeyCode == Keys.F8)
+            {
+                MessageBox.Show("Bill against this entry is done, can not delete this row", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
+        private void dgvItemUsed_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F8 &&
+               dgvItemUsed.CurrentCell != null &&
+               dgvItemUsed.CurrentCell.RowIndex >= 0 &&
+               dgvItemUsed.CurrentCell.ColumnIndex >= 0 &&
+               MessageBox.Show("Are you sure want to delete this Record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                dgvItemUsed.Rows.RemoveAt(dgvItemUsed.CurrentCell.RowIndex);
+                reindexSrNo(dgvItemUsed);
+                CalculateTotals();
+            }
+        }
+
+        private void reindexSrNo(DataGridView grid)
+        {
+            for (var i = 0; i < grid.Rows.Count; i++)
+            {
+                grid.Rows[i].Cells[0].Value = i + 1;
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure want to close Mfg Cycle?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        private void cmbWashingJobberName_Validated(object sender, EventArgs e)
+        {
             if (!string.IsNullOrEmpty(Convert.ToString(cmbWashingJobberName.SelectedIndex)) && cmbWashingJobberName.SelectedIndex != cmbWashingJobberName.Items.Count - 1)
             {
                 dtpCuttingEndDate.Enabled = false;
+                setCurrentWasher(cmbWashingJobberName.SelectedValue.ToString());
             }
             else
             {
                 dtpCuttingEndDate.Enabled = true;
+            }
+        }
+
+        private void cmbPressingJobberName_Validated(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Convert.ToString(cmbPressingJobberName.SelectedIndex)) &&
+                cmbPressingJobberName.SelectedIndex != cmbPressingJobberName.Items.Count - 1)
+            {
+                dtpWashingEndDate.Enabled = false;
+                setCurrentPresser(cmbPressingJobberName.SelectedValue.ToString());
+            }
+            else
+            {
+                dtpWashingEndDate.Enabled = true;
+            }
+        }
+
+        private void setCurrentPresser(string presser)
+        {
+            if (!string.IsNullOrEmpty(presser))
+            {
+                currentPresser = presser;
+                for (var i = 0; i < dgvPressingProcess.Rows.Count; i++)
+                {
+                    dgvPressingProcess.Rows[i].Cells["PressingJobber"].Value = presser;
+                }
+            }
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (!cmbCuttingJobberName.Enabled || !cmbWashingJobberName.Enabled || !cmbPressingJobberName.Enabled)
+            {
+                MessageBox.Show("Bill against several jobber is already done, can not delete this program", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+            else
+            {
+                if (lblId.Text == "U")
+                {
+                    if (MessageBox.Show("Fabric information will be deleted if cutter is going to be changed, Are you sure want to continue?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Operation.ExecuteNonQuery("Delete from MfgCycle where ProgramNo='" + txtProgramNo.Text + "'");
+                        Operation.ExecuteNonQuery("Delete from MfgTrans where ProgramNo='" + txtProgramNo.Text + "'");
+                        Operation.ExecuteNonQuery("Delete from MfgItems where ProgramNo='" + txtProgramNo.Text + "'");
+                        MessageBox.Show("Program Deleted Successfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select any program first.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
             }
         }
     }

@@ -132,6 +132,7 @@
             this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Name = "autoPurchaseEntryModuleForJobberToolStripMenuItem";
             this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Size = new System.Drawing.Size(331, 24);
             this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Text = "Auto Purchase Entry Module For Jobber";
+            this.autoPurchaseEntryModuleForJobberToolStripMenuItem.Click += new System.EventHandler(this.autoPurchaseEntryModuleForJobberToolStripMenuItem_Click);
             // 
             // reportToolStripMenuItem
             // 
