@@ -178,11 +178,13 @@ namespace GarmentMfg
             dgvTransactions.Rows.Clear();
             dgvTransactions.Columns.Clear();
             dgvTransactions.DataSource = Operation.GetDataTable("select [ProgramNo] as [Program No],[LotSize] as [Lot Size],[StartDate] as [Start Date],[EndDate] as [End Date],[CRCVDQTY] as [Jobber Qty],[CCOSTPRPCS] as [Rate],[CTOTALAMT] as [Amount] from mfgcycle where [Cutter]='" +
-                cmbJobber.SelectedValue + "' and [IsCBilled]='N' and [CENDDATE] is not null and [CENDDATE] between #" + dteFromDate.Value.ToString("dd/MM/yyyy") + "# and #" + dteToDate.Value.ToString("dd/MM/yyyy") +
+                cmbJobber.SelectedValue + "' and [IsCBilled]='N' and [CENDDATE] is not null and [CENDDATE] between #" + dteFromDate.Value.ToString("yyyy/MM/dd") + "# and #" + dteToDate.Value.ToString("yyyy/MM/dd") +
                 "# UNION select [MfgCycle].[ProgramNo] as [Program No],[MfgCycle].[LotSize] as [Lot Size],[MfgCycle].[StartDate] as [Start Date],[MfgCycle].[EndDate] as [End Date],[MfgTrans].[Qty] as [Jobber Qty],[MfgTrans].[Rate] as [Rate],[MfgTrans].[Amount] as [Amount] from mfgcycle inner join mfgtrans on mfgtrans.Jobber = MfgCycle.Washer where mfgtrans.Jobber='" +
-                cmbJobber.SelectedValue + "' and [MfgTrans].[IsBilled]='N' and [MfgCycle].[WENDDATE] is not null and [WENDDATE] between #" + dteFromDate.Value.ToString("dd/MM/yyyy") + "# and #" + dteToDate.Value.ToString("dd/MM/yyyy") +
+                cmbJobber.SelectedValue + "' and [MfgTrans].[IsBilled]='N' and [MfgCycle].[WENDDATE] is not null and [WENDDATE] between #" + dteFromDate.Value.ToString("yyyy/MM/dd") + "# and #" + dteToDate.Value.ToString("yyyy/MM/dd") +
                 "# UNION select [MfgCycle].ProgramNo as [Program No],[MfgCycle].LotSize as [Lot Size],[MfgCycle].StartDate as [Start Date],[MfgCycle].EndDate as [End Date],[MfgTrans].[Qty] as [Jobber Qty],[MfgTrans].[Rate] as [Rate],[MfgTrans].[Amount] as [Amount] from mfgcycle inner join mfgtrans on mfgtrans.Jobber = MfgCycle.Presser where mfgtrans.Jobber='" +
-                cmbJobber.SelectedValue + "' and IsPBilled='N' and [PENDDATE] is not null and [PENDDATE] between #" + dteFromDate.Value.ToString("dd/MM/yyyy") + "# and #" + dteToDate.Value.ToString("dd/MM/yyyy") +
+                cmbJobber.SelectedValue + "' and IsPBilled='N' and [PENDDATE] is not null and [PENDDATE] between #" + dteFromDate.Value.ToString("yyyy/MM/dd") + "# and #" + dteToDate.Value.ToString("yyyy/MM/dd") +
+                "# UNION select [MfgCycle].ProgramNo as [Program No],[MfgCycle].LotSize as [Lot Size],[MfgCycle].StartDate as [Start Date],[MfgCycle].EndDate as [End Date],[MfgTrans].[RCVDQTY] as [Jobber Qty],[MfgTrans].[Rate] as [Rate],[MfgTrans].[Amount] as [Amount] from mfgcycle inner join mfgtrans on mfgtrans.ProgramNo = MfgCycle.ProgramNo where mfgtrans.Jobber='" +
+                cmbJobber.SelectedValue + "' and Process='C' and IsBilled='N' and [RCVDDATE] is not null and [RCVDDATE] between #" + dteFromDate.Value.ToString("yyyy/MM/dd") + "# and #" + dteToDate.Value.ToString("yyyy/MM/dd") +
                 "#");
             dgvTransactions.Columns.Add("SrNo", "Sr No");
             dgvTransactions.Columns["SrNo"].DisplayIndex = 0;

@@ -88,6 +88,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
             }
             dtpProgramStartDate.Value = dtpProgramFinishedDate.Value = DateTime.Now.Date;
             dtpProgramFinishedDate.Checked = false;
+            cmbCuttingJobberName.Enabled = cmbWashingJobberName.Enabled = cmbPressingJobberName.Enabled = true;
             dgvCuttingProcess.Rows.Clear();
             dgvFabricUsed.Rows.Clear();
             dgvWashingProcess.Rows.Clear();
@@ -179,6 +180,7 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
             Operation.BindGridComboBox(dgvItemUsed, dgvItemUsed.Rows[dgvItemUsed.Rows.Count - 1].Cells[1], "select Code,Name from Product", "Name", "Code", "-- Select --");
             dgvItemUsed.Rows[dgvItemUsed.Rows.Count - 1].Cells[0].Value = dgvItemUsed.Rows.Count;
         }
+        DataGridViewCell prevCell = null;
 
         private void dgvCuttingProcess_CurrentCellChanged(object sender, EventArgs e)
         {
@@ -191,11 +193,13 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
                 cell.Width = rect.Width;
                 cell.Visible = true;
                 cell.Checked = dgvCuttingProcess.CurrentCell.Value != null;
+                cell.Focus();
+                prevCell = dgvCuttingProcess.CurrentCell;
             }
             else
             {
                 cell.Visible = false;
-                if (dgvCuttingProcess.CurrentCell != null)
+                if (prevCell != null)
                 {
                     dgvCuttingProcess.BeginEdit(true);
                 }
@@ -696,6 +700,12 @@ cmbCuttingJobberName.SelectedValue + "') as myMfg  inner join Product on myMfg.C
             {
                 washingQty += Convert.ToDecimal(dgvWashingProcess.Rows[i].Cells["WashingQty"] != null ? dgvWashingProcess.Rows[i].Cells["WashingQty"].Value : "0");
             }
+            if (washingQty > Convert.ToDecimal(txtCuttingReceivedQty.Text == "" ? "0" : txtCuttingReceivedQty.Text))
+            {
+                MessageBox.Show("You can not take qty more then " + txtCuttingReceivedQty.Text + ", which is received from cutter.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                dgvWashingProcess.CurrentCell.Value = "0";
+                return;
+            }
             txtWashingReceivedQty.Text = Convert.ToString(Math.Round(washingQty, 2));
         }
 
@@ -951,8 +961,8 @@ dtpWashingEndDate.Value.ToString("yyyy-MM-dd") + "','" + cmbFinishedProductName.
 "," + (string.IsNullOrEmpty(txtPressIssuedQty.Text) ? "0" : txtPressIssuedQty.Text) + "," + (string.IsNullOrEmpty(txtPressReceivedQty.Text) ? "0" : txtPressReceivedQty.Text) +
 "," + txtPressingCostPerPcs.Text + "," + txtPressingTotalAmount.Text + ",'" + DateTime.Now.ToString("yyyy-MM-dd") + "'," +
 txtCuttingRate.Text + ",'" + txtWashingRate.Text + "','" + txtPressingRate.Text + "','" + cuttingReceiveLink + "','" +
-washingIssueLink + "','" + washingReceiveLink + "','" + pressingIssueLink + "','" + pressingReceiveLink + "','" + 
-cmbCuttingJobberName.Enabled ? "Y" : "N" + "','" + cmbWashingJobberName.Enabled ? "Y" : "N" + "','" + cmbPressingJobberName.Enabled ? "Y" : "N" + "')");
+washingIssueLink + "','" + washingReceiveLink + "','" + pressingIssueLink + "','" + pressingReceiveLink + "','" +
+(!cmbCuttingJobberName.Enabled ? "Y" : "N") + "','" + (!cmbWashingJobberName.Enabled ? "Y" : "N") + "','" + (!cmbPressingJobberName.Enabled ? "Y" : "N") + "')");
 
                 for (var i = 0; i < dgvCuttingProcess.Rows.Count - 1; i++)
                 {
